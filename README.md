@@ -22,7 +22,6 @@ The core experience is powered by **Lana**, an embedded AI nurse assistant that 
 ### Appointment Booking
 
 ![alt text](image-2.png)
-
 ---
 
 ### Profile Management
