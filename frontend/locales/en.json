@@ -1,0 +1,498 @@
+{
+  "nav": {
+    "home": "Home",
+    "book": "Book",
+    "report": "Report",
+    "history": "History",
+    "contact": "Contact"
+  },
+  "common": {
+    "voice": "Voice mode",
+    "standard": "Standard mode",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "settings": "Settings",
+    "on": "On",
+    "off": "Off",
+    "ai": "VoiceCare AI",
+    "eg": "e.g.",
+    "confirmHint": "Say <strong>\"Yes confirm\"</strong> or <strong>\"No, try again\"</strong>.",
+    "stop": "Stop",
+    "cancel": "Cancel",
+    "clear": "Clear"
+  },
+  "settings": {
+    "language": "Language",
+    "voiceShortcuts": "Voice shortcuts",
+    "voiceFeedback": "Voice feedback",
+    "readActions": "Read actions aloud",
+    "confirmNav": "Confirm before navigating",
+    "mode": "Mode",
+    "voiceDefault": "Voice (default)",
+    "save": "Save settings",
+    "saved": "Settings saved"
+  },
+  "status": {
+    "all": "All",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "normal": "Normal",
+    "high": "High",
+    "low": "Low"
+  },
+  "services": {
+    "general": "General check-up",
+    "blood": "Blood test",
+    "xray": "X-ray",
+    "ecg": "ECG / Heart screening",
+    "specialist": "Specialist referral"
+  },
+  "home": {
+    "welcome": "Welcome to VoiceCare",
+    "tagline": "Just speak — your voice is all you need",
+    "meetLana": "Meet Lana — your AI nurse assistant",
+    "wakeLana": "Say <strong>\"Hi Lana\"</strong> to wake her up, or tap here. She can book appointments, read reports, fill forms, call the clinic and more — all by voice!",
+    "sayHiLana": "Say \"Hi Lana\"",
+    "tapToWake": "or tap to wake",
+    "makeAppt": "Make an appointment",
+    "bookDesc": "Book a check-up or examination",
+    "checkReport": "Check examination report",
+    "reportDesc": "Listen to your medical results",
+    "openHours": "Opening hours",
+    "openHoursDetail": "Mon-Fri: 8am-6pm<br/>Saturday: 9am-1pm<br/>Sunday: Closed",
+    "ourServices": "Our services",
+    "ourServicesDetail": "General check-up<br/>Blood test &amp; X-ray<br/>ECG &amp; specialist referral",
+    "voiceGuide": "Voice guide",
+    "voiceGuideDetails": "Help for commands.<br/>Say \"Book\" to start.<br/>Fully hands-free.",
+    "accessibilityStatement": "<strong style=\"color:#3C4448;\">Accessibility Statement:</strong> Commission a formal accessibility audit against WCAG 2.1 AA and ensure compliance with applicable local data protection regulations for patient health data.",
+    "voiceHint": "Say \"Book\" to make an appointment, or \"Report\" to check your results.",
+    "helpBubble": "I can help you <strong>book an appointment</strong> or <strong>check your report</strong>. Which would you like?",
+    "helpHint": "Say \"Book\" or \"Report\" to continue."
+  },
+  "booking": {
+    "title": "Book an appointment",
+    "subtitle": "Speak each field — AI understands and fills the form for you",
+    "steps": {
+      "name": {
+        "lbl": "Full name",
+        "hint": "Say your full name.",
+        "eg": "\"My name is Sarah Ali\""
+      },
+      "dob": {
+        "lbl": "Date of birth",
+        "hint": "Say your date of birth.",
+        "eg": "\"Born 12 March 1990\""
+      },
+      "service": {
+        "lbl": "Service type",
+        "hint": "Say the service you need.",
+        "eg": "\"Blood test\" or \"General check-up\""
+      },
+      "date": {
+        "lbl": "Preferred date",
+        "hint": "Say your preferred appointment date.",
+        "eg": "\"Next Monday\" or \"28 April\""
+      },
+      "time": {
+        "lbl": "Preferred time",
+        "hint": "Say your preferred time.",
+        "eg": "\"Nine AM\" or \"Two thirty PM\""
+      }
+    },
+    "placeholders": {
+      "name": "Say: \"My name is...\"",
+      "notes": "Say \"Dictate\" then speak notes, or type here..."
+    },
+    "selectService": "Select a service...",
+    "selectTime": "Select a time...",
+    "notes": "Notes (optional)",
+    "quickSlots": "Quick-select available slots",
+    "confirm": "Confirm booking",
+    "startOver": "Start over",
+    "confirmedTitle": "Appointment confirmed!",
+    "nameLabel": "Name:",
+    "serviceLabel": "Service:",
+    "dateLabel": "Date:",
+    "timeLabel": "Time:",
+    "viewHistory": "View in history",
+    "formReset": "Form reset.",
+    "msg": {
+      "understanding": "<span class=\"dots\"><span></span><span></span><span></span></span> Understanding <em>\"{text}\"</em> for <strong>{field}</strong>...",
+      "connectionIssue": "Connection issue. Please try again.",
+      "didYouMean": "I heard: <strong>\"{text}\"</strong><br/>Did you mean <strong>{value}</strong> for {field}?",
+      "fieldSet": "<strong>{field}</strong>: <strong>{value}</strong>",
+      "allFieldsFilled": "All fields filled! Say <strong>\"Confirm booking\"</strong> to finish.",
+      "nextField": "<strong>Next: {field}</strong> — {hint}",
+      "allDone": "All done. Say <strong>\"Confirm booking\"</strong>.",
+      "emptyFields": "Some required fields are still empty. Please fill in all fields before confirming.",
+      "sayConfirm": "Say confirm booking.",
+      "slotSet": "Selected {date} at {time}. Please confirm booking.",
+      "slotToast": "Slot selected: {date} {time}",
+      "retryType": "Still having trouble. Please <strong>type the {field}</strong> in the field below, or say <strong>\"Skip\"</strong>.",
+      "retryTry": "I heard <strong>\"{text}\"</strong> but could not understand {field}. Try: <strong>{example}</strong>",
+      "confirmed": "Confirmed: <strong>{service}</strong> on <strong>{date}</strong> at <strong>{time}</strong>"
+    },
+    "speech": {
+      "didYouMean": "Did you mean {value} for {field}?",
+      "fieldSet": "{field} set to {value}",
+      "allFieldsFilled": "All fields completed. Say confirm booking to finish.",
+      "example": "For example: {example}",
+      "emptyFields": "Please fill in all required fields first.",
+      "startingOver": "Starting over.",
+      "confirmed": "Appointment confirmed for {service} on {date} at {time}."
+    },
+    "slots": {
+      "mon28": "Mon 28 Apr",
+      "tue29": "Tue 29 Apr",
+      "wed30": "Wed 30 Apr",
+      "thu1": "Thu 1 May",
+      "fri2a": "Fri 2 May",
+      "fri2b": "Fri 2 May"
+    },
+    "times": {
+      "t0900": "9:00 AM",
+      "t1000": "10:00 AM",
+      "t1400": "2:00 PM",
+      "t1100": "11:00 AM",
+      "t1500": "3:00 PM",
+      "t0800": "8:00 AM",
+      "t1600": "4:00 PM"
+    }
+  },
+  "report": {
+    "title": "Examination reports",
+    "subtitle": "Say \"Read aloud\" or ask a question about your results",
+    "yourReports": "Your reports",
+    "readAloud": "Read aloud",
+    "testResults": "Test results",
+    "ref": "Ref:",
+    "doctorNote": "Doctor's note",
+    "askTitle": "Ask about your results",
+    "askExample": "Say: <em>\"Why is my cholesterol high?\"</em>",
+    "questionPlaceholder": "Type or speak a question...",
+    "askAI": "Ask AI",
+    "listHint": "Say report name to open.<br/>Say <strong>\"Read aloud\"</strong> to hear.",
+    "ttsUnsupported": "TTS not supported",
+    "msg": {
+      "opened": "Opened: <strong>{type}</strong>. Say <strong>\"Read aloud\"</strong> to hear results.",
+      "readComplete": "Report read complete. Ask a question or say another report name.",
+      "reading": "Reading <strong>{type}</strong> aloud. Say <strong>\"Stop\"</strong> to pause.",
+      "lookingUp": "<span class=\"dots\"><span></span><span></span><span></span></span> Looking up your results...",
+      "askAnother": "Say another question or \"Read aloud\" for the full report.",
+      "answerError": "Could not fetch answer. Please try again.",
+      "stopped": "Reading stopped.",
+      "help": "Say <strong>\"Read aloud\"</strong>, or a report name: <strong>\"Blood test\"</strong>, <strong>\"Check-up\"</strong>, <strong>\"X-ray\"</strong>."
+    },
+    "speech": {
+      "opened": "Opened {type}. Say read aloud to hear results."
+    },
+    "from": "from",
+    "reference": "Reference:",
+    "notePrefix": "Doctor note:",
+    "flowHint": "Say \"Read aloud\", choose a report, or ask a question"
+  },
+  "history": {
+    "title": "Appointment history",
+    "subtitle": "Say \"Upcoming\" or \"Completed\" to filter",
+    "newAppointment": "+ New appointment",
+    "totalVisits": "Total visits",
+    "at": "at",
+    "viewReport": "View report",
+    "details": "Details",
+    "detailsShown": "Appointment details shown",
+    "noAppointments": "No {filter} appointments.",
+    "showing": "Showing <strong>{filter}</strong> appointments.",
+    "filterHint": "Say \"Upcoming\", \"Completed\" or \"All\" to filter.",
+    "help": "Say <strong>\"Upcoming\"</strong>, <strong>\"Completed\"</strong>, <strong>\"All\"</strong>, or <strong>\"Book\"</strong> for new appointment."
+  },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "Say \"Call us\", \"Email\", \"Dictate\" to speak a message, or \"Send message\"",
+    "addressTitle": "Address",
+    "addressValue": "voice care street<br/>voicecare, 00-000, world",
+    "sayAddress": "Say: \"Address\"",
+    "phoneTitle": "Phone",
+    "hoursShort": "Mon-Fri 8am-6pm, Sat 9am-1pm",
+    "sayCall": "Say: \"Call us\"",
+    "emailTitle": "Email",
+    "replyTime": "Reply within 1 business day",
+    "sayEmail": "Say: \"Email\"",
+    "emergencyTitle": "Medical emergency?",
+    "emergencyText": "Call <strong>999</strong> immediately",
+    "sendMessage": "Send message",
+    "yourName": "Your name",
+    "subject": "Subject",
+    "message": "Message",
+    "dictateHint": "Say <strong>\"Dictate\"</strong> to speak — AI will transcribe automatically.",
+    "dictate": "Dictate",
+    "sentToast": "Message sent!",
+    "placeholders": {
+      "name": "e.g. Sarah Ali",
+      "email": "e.g. sarah@email.com",
+      "message": "Say \"Dictate\" to speak your message, or type here..."
+    },
+    "subjects": {
+      "general": "General enquiry",
+      "appointment": "Appointment question",
+      "report": "Report query",
+      "accessibility": "Accessibility support",
+      "feedback": "Feedback"
+    },
+    "msg": {
+      "formCleared": "Form cleared. Say \"Dictate\" to speak your message.",
+      "phone": "Our phone: <strong>+00 000000000</strong>. Mon-Fri 8am-6pm, Sat 9am-1pm.",
+      "email": "Our email: <strong>hello@voicecare.com</strong>. We reply within 1 business day.",
+      "address": "We are at <strong>voice care street</strong>.",
+      "recorded": "Message recorded. Say <strong>\"Send message\"</strong> or press Send.",
+      "added": "Added: <em>\"{text}\"</em>. Say more or say <strong>\"Done\"</strong>.",
+      "help": "Say <strong>\"Dictate\"</strong> to speak your message, <strong>\"Call us\"</strong>, <strong>\"Email\"</strong> or <strong>\"Address\"</strong>.",
+      "dictationOn": "<strong>Dictation on.</strong> Speak your message. Say <strong>\"Done\"</strong> when finished.",
+      "required": "Please fill in your name, email and message before sending.",
+      "sent": "Message sent! We will reply to <strong>{name}</strong> within one business day."
+    },
+    "speech": {
+      "phone": "Our phone number is plus 00 000 000 000. Open Monday to Friday 8am to 6pm.",
+      "email": "Our email is hello at voicecare dot com.",
+      "address": "We are at 12 Healthcare Avenue, Kuala Lumpur.",
+      "dictationOn": "Dictation mode on. Speak your message and say done when finished.",
+      "required": "Please fill in all required fields.",
+      "sent": "Message sent. We will reply within one business day."
+    }
+  },
+  "auth": {
+    "logoTag": "Your health, heard",
+    "backHome": "← Back to home",
+    "voicePrompt": "Say <strong>\"Sign in\"</strong> or <strong>\"Create account\"</strong> to begin.",
+    "welcomeBack": "Welcome back",
+    "signInSubtitle": "Sign in to access your health records",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "No account? <a href=\"#\" style=\"color:var(--p600);font-weight:500;\" onclick=\"showTab('up')\">Sign up</a>",
+    "createAccount": "Create account",
+    "signUpSubtitle": "Join VoiceCare — hands-free healthcare",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "terms": "By signing up you agree to VoiceCare's terms. Your data is kept strictly private.",
+    "haveAccount": "Have an account? <a href=\"#\" style=\"color:var(--p600);font-weight:500;\" onclick=\"showTab('in')\">Sign in</a>",
+    "switchSignIn": "Switching to <strong>Sign in</strong>. Please enter your details.",
+    "switchSignUp": "Switching to <strong>Sign up</strong>. Let's create your account.",
+    "help": "Say <strong>\"Sign in\"</strong> to log in or <strong>\"Create account\"</strong> to register.",
+    "heard": "I heard <strong>\"{text}\"</strong>. Say <strong>\"Sign in\"</strong> or <strong>\"Create account\"</strong>.",
+    "signingIn": "Signing in...",
+    "accountCreated": "Account created! Welcome to VoiceCare.",
+    "welcomeSpeech": "Welcome to VoiceCare. Say sign in or create account to begin.",
+    "placeholders": {
+      "email": "e.g. sarah@email.com",
+      "password": "Enter your password",
+      "firstName": "Sarah",
+      "lastName": "Ali",
+      "emailShort": "sarah@email.com",
+      "createPassword": "Create a password"
+    }
+  },
+  "lana": {
+    "micTitle": "Allow microphone for hands-free access",
+    "micBody": "VoiceCare is designed to be completely hands-free. Allow microphone once — then just say <strong>\"Hi Lana\"</strong> any time.",
+    "allowMic": "Yes, allow microphone",
+    "sayHi": "Say \"Hi Lana\"",
+    "ready": "Ready",
+    "waiting": "Waiting for your voice...",
+    "call": "Call",
+    "help": "Help",
+    "sleep": "Sleep",
+    "requesting": "Requesting...",
+    "tryAgain": "Try again",
+    "micBlocked": "<strong style=\"color:#A32D2D\">Blocked.</strong> Click the lock icon in the address bar, set Microphone to Allow, then refresh.",
+    "listening": "Listening...",
+    "greetHome": "Hi! I am Lana, your VoiceCare nurse. Say Book to make an appointment, or Report to check your results.",
+    "greetBook": "Hi! I am on the booking page. Say Fill form and I will guide you through everything step by step.",
+    "greetReport": "Hi! Your reports are here. Say a report name or Read aloud to hear your results.",
+    "greetHistory": "Hi! This is your appointment history. Say Upcoming or Completed to filter.",
+    "greetContact": "Hi! Say Dictate to speak a message, or Call clinic to phone us.",
+    "greetSignin": "Hi! Say Sign in or Create account to continue.",
+    "greetDefault": "Hi! I am Lana. How can I help?",
+    "callingClinic": "Calling VoiceCare clinic now. The number is plus 60 3 2345 6789.",
+    "scrollingDown": "Scrolling down.",
+    "scrollingUp": "Scrolling up.",
+    "backToTop": "Back to top.",
+    "helpText": "I can book appointments by asking you questions, check your reports, call the clinic, navigate any page, fill in forms, scroll, and click buttons. Just tell me what you need.",
+    "helpHint": "Try: \"Book appointment\" · \"Report\" · \"History\" · \"Call clinic\" · \"Help\"",
+    "sleeping": "Sleeping",
+    "speaking": "Speaking",
+    "thinking": "Thinking",
+    "thinkingHint": "Let me think...",
+    "examplePrefix": "Example:",
+    "didNotCatch": "I did not catch that.",
+    "fieldSet": "{field} set to {value}",
+    "bookingGo": "Let me take you to the booking page and guide you through it.",
+    "bookingIntro": "I will help you book an appointment. I will ask you a few questions.",
+    "bookingSummary": "All done! Here is your booking summary: {summary}. Say Confirm booking to complete, or tell me if anything needs to change.",
+    "confirmHint": "Say \"Confirm booking\" to submit",
+    "clicked": "Done. I clicked {label} for you.",
+    "buttonNotFound": "I could not find that button. Please tap it directly.",
+    "filled": "Filled that in.",
+    "clicking": "Clicking.",
+    "onMyWay": "On my way.",
+    "callingShort": "Calling.",
+    "tryMainCommands": "Try saying Book, Report, or Help.",
+    "notSure": "Not sure about that. Try: Book, Report, History, Call clinic, or Help.",
+    "navHome": "Taking you home.",
+    "navReport": "Opening your reports.",
+    "navHistory": "Here is your history.",
+    "navContact": "Going to contact.",
+    "navSignin": "Opening sign in.",
+    "navSignup": "Opening sign up.",
+    "bookingLabels": {
+      "name": "Name",
+      "sex": "Sex",
+      "dob": "Date of birth",
+      "ic": "IC number",
+      "phone": "Phone",
+      "service": "Service",
+      "date": "Date",
+      "time": "Time"
+    },
+    "bookingSteps": {
+      "name": {
+        "ask": "What is your full name?",
+        "hint": "\"My name is Sarah Ali\""
+      },
+      "sex": {
+        "ask": "What is your sex? Male or female?",
+        "hint": "\"Female\" or \"Male\""
+      },
+      "dob": {
+        "ask": "What is your date of birth?",
+        "hint": "\"Born 12 March 1990\""
+      },
+      "ic": {
+        "ask": "What is your IC or passport number?",
+        "hint": "\"My IC is 901212 04 1234\""
+      },
+      "phone": {
+        "ask": "What is your phone number?",
+        "hint": "\"My number is 012 345 6789\""
+      },
+      "service": {
+        "ask": "Which service do you need? Blood test, check-up, X-ray, ECG, or specialist?",
+        "hint": "\"Blood test\""
+      },
+      "date": {
+        "ask": "What is your preferred appointment date?",
+        "hint": "\"Next Monday\" or \"28 April\""
+      },
+      "time": {
+        "ask": "What is your preferred time?",
+        "hint": "\"Nine AM\" or \"Two PM\""
+      }
+    }
+  },
+  "reportData": {
+    "r1": {
+      "type": "Blood Test",
+      "date": "22 Apr 2026",
+      "note": "Overall normal. Cholesterol slightly elevated — dietary adjustment and follow-up in 3 months recommended."
+    },
+    "r2": {
+      "type": "General Check-up",
+      "date": "10 Mar 2026",
+      "note": "All routine checks are within expected range. Keep your current activity and sleep routine."
+    },
+    "r3": {
+      "type": "Chest X-Ray",
+      "date": "5 Jan 2026",
+      "note": "No acute abnormality detected. Follow up only if cough, fever, or breathing symptoms continue."
+    },
+    "items": {
+      "haemoglobin": {
+        "name": "Haemoglobin",
+        "ref": "13.5–17.5"
+      },
+      "wbc": {
+        "name": "White blood cell",
+        "ref": "4.0–11.0"
+      },
+      "platelets": {
+        "name": "Platelets",
+        "ref": "150–400"
+      },
+      "glucose": {
+        "name": "Glucose",
+        "ref": "3.9–6.1"
+      },
+      "cholesterol": {
+        "name": "Cholesterol",
+        "ref": "<5.2"
+      },
+      "hdl": {
+        "name": "HDL",
+        "ref": ">1.0"
+      },
+      "bp": {
+        "name": "Blood pressure",
+        "ref": "<120/80"
+      },
+      "pulse": {
+        "name": "Pulse",
+        "ref": "60–100"
+      },
+      "temp": {
+        "name": "Temperature",
+        "ref": "36.1–37.2"
+      },
+      "lungs": {
+        "name": "Lung fields",
+        "ref": "Clear"
+      },
+      "heart": {
+        "name": "Heart size",
+        "ref": "Normal"
+      },
+      "findings": {
+        "name": "Findings",
+        "ref": "None"
+      },
+      "hr": {
+        "name": "Heart rate",
+        "ref": "60–100"
+      },
+      "bmi": {
+        "name": "BMI",
+        "ref": "18.5–24.9"
+      },
+      "heartSize": {
+        "name": "Heart size",
+        "ref": "Normal"
+      },
+      "bone": {
+        "name": "Bone structures",
+        "ref": "Normal"
+      }
+    },
+    "values": {
+      "clear": "Clear",
+      "normal": "Normal",
+      "noAbnormality": "No abnormality"
+    }
+  },
+  "historyData": {
+    "types": {
+      "blood": "Blood test",
+      "checkup": "General check-up",
+      "xray": "Chest X-Ray",
+      "ecg": "ECG / Heart screening",
+      "specialist": "Specialist referral"
+    },
+    "dates": {
+      "h1": "Mon 28 Apr 2026",
+      "h2": "22 Apr 2026",
+      "h3": "10 Mar 2026",
+      "h4": "5 Jan 2026",
+      "h5": "18 Nov 2025",
+      "h6": "2 Sep 2025",
+      "h7": "12 Jun 2025"
+    }
+  }
+}

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>VoiceCare — Book</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap"
+    rel="stylesheet" />
+  <style>
+    .sc {
+      background: var(--white);
+      border: 1px solid var(--p100);
+      border-radius: var(--r-lg);
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      transition: border-color .2s, background .2s;
+    }
+
+    .sc.act {
+      border-color: var(--p400);
+      background: var(--p50);
+    }
+
+    .sc.dn {
+      border-color: var(--green);
+      background: var(--gbg);
+    }
+
+    .snum {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--p100);
+      color: var(--p600);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .snum.act {
+      background: var(--p400);
+      color: #fff;
+    }
+
+    .snum.dn {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .slot {
+      background: var(--p50);
+      border: 1px solid var(--p100);
+      border-radius: var(--r-md);
+      padding: 9px 14px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .slot:hover,
+    .slot.sel {
+      background: var(--p400);
+      border-color: var(--p400);
+    }
+
+    .slot:hover *,
+    .slot.sel * {
+      color: #fff !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell" id="root"></div>
+  <script src="core.js?v=20260516-lang4"></script>
+  <script>
+    const STEPS = [
+      {
+        id: 'name', lbl: 'Full name', hint: 'Say your full name.', eg: '"My name is Sarah Ali"',
+        prompt: t => `Extract full name from voice input. Return ONLY valid JSON (no markdown fences): {"value":"name here","confidence":"high or low","understood":true or false}\nVoice: "${t}"`
+      },
+      {
+        id: 'dob', lbl: 'Date of birth', hint: 'Say your date of birth.', eg: '"Born 12 March 1990"',
+        prompt: t => `Extract date of birth. Return ONLY valid JSON: {"value":"YYYY-MM-DD","confidence":"high or low","understood":true or false}\nToday:${new Date().toISOString().split('T')[0]}\nVoice:"${t}"`
+      },
+      {
+        id: 'service', lbl: 'Service type', hint: 'Say the service you need.', eg: '"Blood test" or "General check-up"',
+        prompt: t => `Match to ONE: "General check-up","Blood test","X-ray","ECG / Heart screening","Specialist referral". Return ONLY valid JSON: {"value":"exact name","confidence":"high or low","understood":true or false}\nVoice:"${t}"`
+      },
+      {
+        id: 'date', lbl: 'Preferred date', hint: 'Say your preferred appointment date.', eg: '"Next Monday" or "28 April"',
+        prompt: t => `Extract appointment date. Interpret relative dates from today (${new Date().toISOString().split('T')[0]}). Return ONLY valid JSON: {"value":"YYYY-MM-DD","confidence":"high or low","understood":true or false}\nVoice:"${t}"`
+      },
+      {
+        id: 'time', lbl: 'Preferred time', hint: 'Say your preferred time.', eg: '"Nine AM" or "Two thirty PM"',
+        prompt: t => `Extract time, match nearest of: 08:00,09:00,10:00,11:00,14:00,15:00,16:00. Return ONLY valid JSON: {"value":"HH:MM","confidence":"high or low","understood":true or false}\nVoice:"${t}"`
+      },
+    ];
+    function tt(key) { return VC.t(key); }
+    function stepText(step, field) { return tt(`booking.steps.${step.id}.${field}`); }
+    const SLOTS = [
+      { key: 'mon28', timeKey: 't0900', dv: '2026-04-28', tv: '09:00' },
+      { key: 'tue29', timeKey: 't1000', dv: '2026-04-29', tv: '10:00' },
+      { key: 'wed30', timeKey: 't1400', dv: '2026-04-30', tv: '14:00' },
+      { key: 'thu1', timeKey: 't0900', dv: '2026-05-01', tv: '09:00' },
+      { key: 'fri2a', timeKey: 't1100', dv: '2026-05-02', tv: '11:00' },
+      { key: 'fri2b', timeKey: 't1500', dv: '2026-05-02', tv: '15:00' },
+    ];
+    function slotText(key) { return tt(`booking.slots.${key}`); }
+    function timeText(key) { return tt(`booking.times.${key}`); }
+
+    const BS = { step: 0, vals: {}, retries: 0, pending: null };
+
+    function fmtV(id, v) {
+      if (!v) return v;
+      if (id === 'dob' || id === 'date') {
+        const d = new Date(v + 'T00:00:00');
+        const locales = { EN: 'en-GB', 中文: 'zh-CN', PL: 'pl-PL', FR: 'fr-FR' };
+        return isNaN(d) ? v : d.toLocaleDateString(locales[VC.lang] || 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+      if (id === 'time') {
+        const key = 't' + v.replace(':', '');
+        const tx = tt('booking.times.' + key);
+        if (tx !== 'booking.times.' + key) return tx;
+        const [h] = v.split(':'); const hr = parseInt(h); return (hr > 12 ? hr - 12 : hr) + ':00 ' + (hr >= 12 ? 'PM' : 'AM');
+      }
+      return v;
+    }
+
+    function rdrSteps() {
+      const el = document.getElementById('step-prog'); if (!el) return;
+      el.innerHTML = STEPS.map((s, i) => `<div class="step-dot${i < BS.step ? ' dn' : i === BS.step ? ' act' : ''}">${i < BS.step ? '&#10003;' : i + 1}</div>${i < STEPS.length - 1 ? `<div class="step-line${i < BS.step ? ' dn' : ''}"></div>` : ''}`).join('');
+      STEPS.forEach((s, i) => {
+        const c = document.getElementById('bsc-' + s.id); if (!c) return;
+        c.className = 'sc' + (i < BS.step ? ' dn' : i === BS.step ? ' act' : '');
+        const n = c.querySelector('.snum'); if (n) { n.className = 'snum' + (i < BS.step ? ' dn' : i === BS.step ? ' act' : ''); n.innerHTML = i < BS.step ? '&#10003;' : (i + 1) + ''; }
+      });
+    }
+
+    async function handleStep(text, lower) {
+      if (/confirm booking|confirm appointment/.test(lower)) { doSubmit(); return; }
+      if (/start over|reset|cancel booking/.test(lower)) { doReset(); return; }
+      if (/skip|next field/.test(lower)) { BS.step = Math.min(BS.step + 1, STEPS.length); rdrSteps(); advHint(); return; }
+      if (BS.step >= STEPS.length) { doSubmit(); return; }
+      const step = STEPS[BS.step];
+      VC.thinking = true; VC.micState('thinking');
+      VC.bubble('dim', VC.tf('booking.msg.understanding', { text: VC.esc(text), field: stepText(step, 'lbl') }), '');
+      try {
+        const raw = await VC.claude(step.prompt(text));
+        VC.thinking = false; VC.micState('idle');
+        processR(step, raw, text);
+      } catch (e) {
+        VC.thinking = false; VC.micState('err');
+        VC.bubble('err', tt('booking.msg.connectionIssue'), stepText(step, 'hint'));
+        setTimeout(() => VC.startSR(), 1000);
+      }
+    }
+
+    function processR(step, raw, transcript) {
+      let p;
+      try { p = JSON.parse(raw.replace(/```json|```/g, '').trim()); }
+      catch (e) { retry(step, transcript); return; }
+      if (!p.understood || !p.value) { retry(step, transcript); return; }
+      if (p.confidence === 'low') {
+        VC.pending = { action: () => fillStep(step, p.value) };
+        VC.bubble('warn', VC.tf('booking.msg.didYouMean', { text: VC.esc(transcript), value: fmtV(step.id, p.value), field: stepText(step, 'lbl') }), tt('common.confirmHint'));
+        VC.speak(VC.tf('booking.speech.didYouMean', { value: fmtV(step.id, p.value), field: stepText(step, 'lbl') }), () => setTimeout(() => VC.startSR(), 400));
+        return;
+      }
+      BS.retries = 0; fillStep(step, p.value);
+    }
+
+    function retry(step, transcript) {
+      BS.retries++;
+      const msg = BS.retries >= 3
+        ? VC.tf('booking.msg.retryType', { field: stepText(step, 'lbl') })
+        : VC.tf('booking.msg.retryTry', { text: VC.esc(transcript), field: stepText(step, 'lbl'), example: stepText(step, 'eg') });
+      VC.bubble('err', msg, BS.retries >= 3 ? '' : stepText(step, 'hint'));
+      VC.speak(stepText(step, 'hint') + '. ' + VC.tf('booking.speech.example', { example: stepText(step, 'eg').replace(/<[^>]*>/g, '') }), () => setTimeout(() => VC.startSR(), 300));
+      if (BS.retries >= 3) BS.retries = 0;
+    }
+
+    function fillStep(step, value) {
+      BS.retries = 0; BS.vals[step.id] = value;
+      const f = document.getElementById('bf-' + step.id);
+      if (f) { f.classList.remove('fill'); f.value = value; f.classList.add('done'); }
+      const vd = document.getElementById('bv-' + step.id);
+      if (vd) vd.textContent = fmtV(step.id, value);
+      VC.bubble('ok', `${IC.check()} ${VC.tf('booking.msg.fieldSet', { field: stepText(step, 'lbl'), value: fmtV(step.id, value) })}`, '');
+      VC.micState('success'); VC.toast('✓ ' + stepText(step, 'lbl') + ': ' + fmtV(step.id, value));
+      VC.speak(VC.tf('booking.speech.fieldSet', { field: stepText(step, 'lbl'), value: fmtV(step.id, value) }));
+      BS.step++; rdrSteps();
+      if (BS.step >= STEPS.length) {
+        setTimeout(() => { VC.micState('idle'); VC.bubble('ok', `${IC.check()} ${tt('booking.msg.allFieldsFilled')}`, ''); VC.speak(tt('booking.speech.allFieldsFilled'), () => setTimeout(() => VC.startSR(), 400)); }, 1000);
+      } else {
+        const ns = STEPS[BS.step];
+        setTimeout(() => {
+          VC.micState('idle');
+          VC.bubble('normal', VC.tf('booking.msg.nextField', { field: stepText(ns, 'lbl'), hint: stepText(ns, 'hint') }), stepText(ns, 'eg'));
+          const nf = document.getElementById('bf-' + ns.id); if (nf) nf.classList.add('fill');
+          VC.speak(stepText(ns, 'hint') + '. ' + VC.tf('booking.speech.example', { example: stepText(ns, 'eg').replace(/<[^>]*>/g, '') }), () => setTimeout(() => VC.startSR(), 300));
+        }, 1200);
+      }
+    }
+
+    function advHint() {
+      if (BS.step >= STEPS.length) { VC.bubble('ok', `${IC.check()} ${tt('booking.msg.allDone')}`, ''); }
+      else { const s = STEPS[BS.step]; VC.bubble('normal', `<strong>${stepText(s, 'lbl')}</strong> — ${stepText(s, 'hint')}`, stepText(s, 'eg')); }
+    }
+
+    function manualFill(id, value) {
+      if (!value) return;
+      BS.vals[id] = value;
+      const idx = STEPS.findIndex(s => s.id === id); if (idx < 0) return;
+      const f = document.getElementById('bf-' + id); if (f) { f.classList.remove('fill'); f.classList.add('done'); }
+      if (idx === BS.step) { BS.step++; rdrSteps(); advHint(); }
+    }
+
+    function selectSlot(el, dv, tv, dl, tl) {
+      document.querySelectorAll('.slot').forEach(b => b.classList.remove('sel'));
+      el.classList.add('sel');
+      const fd = document.getElementById('bf-date'); if (fd) { fd.value = dv; fd.classList.add('done'); fd.classList.remove('fill'); }
+      const ft = document.getElementById('bf-time'); if (ft) { ft.value = tv; ft.classList.add('done'); ft.classList.remove('fill'); }
+      BS.vals.date = dv; BS.vals.time = tv;
+      const di = STEPS.findIndex(s => s.id === 'date'); const ti = STEPS.findIndex(s => s.id === 'time');
+      if (BS.step <= di) BS.step = Math.max(BS.step, ti + 1);
+      rdrSteps(); VC.bubble('ok', `${IC.check()} ${VC.tf('booking.msg.slotSet', { date: dl, time: tl })}`, ''); VC.toast(VC.tf('booking.msg.slotToast', { date: dl, time: tl }));
+    }
+
+    async function doSubmit() {
+      const bookingData = {
+        patientName: document.getElementById("bf-name")?.value || "",
+        dob: document.getElementById("bf-dob")?.value || "",
+        service: document.getElementById("bf-service")?.value || "",
+        date: document.getElementById("bf-date")?.value || "",
+        time: document.getElementById("bf-time")?.value || "",
+        notes: document.getElementById("bf-notes")?.value || ""
+      };
+
+      if (
+        !bookingData.patientName ||
+        !bookingData.service ||
+        !bookingData.date ||
+        !bookingData.time
+      ) {
+        VC.bubble("err", "Please complete required fields.", "");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8788/api/bookings",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bookingData)
+          }
+        );
+
+        const result = await response.json();
+
+        VC.bubble(
+          "ok",
+          `${IC.check()} Booking saved successfully.`,
+          ""
+        );
+
+        VC.toast("Appointment saved");
+        console.log(result);
+
+      } catch (error) {
+        console.error(error);
+
+        VC.bubble(
+          "err",
+          "Backend connection failed.",
+          ""
+        );
+      }
+    }
+
+    function doReset() {
+      BS.step = 0; BS.vals = {}; BS.retries = 0;
+      STEPS.forEach(s => { const f = document.getElementById('bf-' + s.id); if (f) { f.value = ''; f.classList.remove('done', 'fill'); } });
+      document.getElementById('conf-banner').style.display = 'none';
+      rdrSteps(); VC.toast(tt('booking.formReset'));
+      const fs = STEPS[0]; VC.bubble('normal', stepText(fs, 'hint'), stepText(fs, 'eg'));
+      const ff = document.getElementById('bf-' + fs.id); if (ff) ff.classList.add('fill');
+      VC.speak(tt('booking.speech.startingOver') + ' ' + stepText(fs, 'hint'), () => setTimeout(() => VC.startSR(), 400));
+    }
+
+    /* ---- BUILD PAGE ---- */
+    VC.flow = { hint: () => BS.step < STEPS.length ? stepText(STEPS[BS.step], 'hint') + '. ' + stepText(STEPS[BS.step], 'eg') : tt('booking.msg.sayConfirm'), handle: handleStep };
+
+    document.getElementById('root').innerHTML = buildShell('book.html') + `
+
+<div class="page-content">
+  <div style="margin-bottom:14px;">
+
+  <p class="ptitle" data-lang="booking.title">
+    Book an appointment
+  </p>
+
+  <p class="psub" data-lang="booking.subtitle">
+    Speak each field — AI understands and fills the form for you
+  </p>
+
+</div>
+
+  <div class="step-ind" id="step-prog"></div>
+  <div style="margin-bottom:14px;">
+    ${STEPS.map((s, i) => `<div class="sc${i === 0 ? ' act' : ''}" id="bsc-${s.id}">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="snum${i === 0 ? ' act' : ''}">${i + 1}</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:500;color:var(--g900);" data-lang="booking.steps.${s.id}.lbl">${stepText(s, 'lbl')}</div><div style="font-size:11px;color:var(--g500);margin-top:1px;"><span data-lang="booking.steps.${s.id}.hint">${stepText(s, 'hint')}</span> — <span data-lang="common.eg">${tt('common.eg')}</span> <span data-lang="booking.steps.${s.id}.eg">${stepText(s, 'eg')}</span></div></div>
+        <div id="bv-${s.id}" style="font-size:13px;font-weight:500;color:var(--gdark);"></div>
+      </div>
+    </div>`).join('')}
+  </div>
+  <div class="card" style="border-color:var(--p100);">
+    <div class="g2">
+      <div class="fg"><label><span data-lang="booking.steps.name.lbl">Full name</span> <span style="color:var(--p400)">*</span></label><input type="text" id="bf-name" class="fill" placeholder='Say: "My name is..."' data-lang-placeholder="booking.placeholders.name" oninput="manualFill('name',this.value)"/></div>
+      <div class="fg"><label><span data-lang="booking.steps.dob.lbl">Date of birth</span> <span style="color:var(--p400)">*</span></label><input type="date" id="bf-dob" oninput="manualFill('dob',this.value)"/></div>
+    </div>
+    <div class="fg"><label><span data-lang="booking.steps.service.lbl">Service type</span> <span style="color:var(--p400)">*</span></label>
+      <select id="bf-service" onchange="manualFill('service',this.value)">
+        <option value="" data-lang="booking.selectService">Select a service...</option>
+        <option data-lang="services.general">General check-up</option><option data-lang="services.blood">Blood test</option><option data-lang="services.xray">X-ray</option>
+        <option data-lang="services.ecg">ECG / Heart screening</option><option data-lang="services.specialist">Specialist referral</option>
+      </select>
+    </div>
+    <div class="g2">
+      <div class="fg"><label><span data-lang="booking.steps.date.lbl">Preferred date</span> <span style="color:var(--p400)">*</span></label><input type="date" id="bf-date" oninput="manualFill('date',this.value)"/></div>
+      <div class="fg"><label><span data-lang="booking.steps.time.lbl">Preferred time</span> <span style="color:var(--p400)">*</span></label>
+        <select id="bf-time" onchange="manualFill('time',this.value)">
+          <option value="" data-lang="booking.selectTime">Select a time...</option>
+          <option value="08:00" data-lang="booking.times.t0800">8:00 AM</option><option value="09:00" data-lang="booking.times.t0900">9:00 AM</option>
+          <option value="10:00" data-lang="booking.times.t1000">10:00 AM</option><option value="11:00" data-lang="booking.times.t1100">11:00 AM</option>
+          <option value="14:00" data-lang="booking.times.t1400">2:00 PM</option><option value="15:00" data-lang="booking.times.t1500">3:00 PM</option><option value="16:00" data-lang="booking.times.t1600">4:00 PM</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label data-lang="booking.notes">Notes (optional)</label><textarea id="bf-notes" rows="2" placeholder='Say "Dictate" then speak notes, or type here...' data-lang-placeholder="booking.placeholders.notes"></textarea></div>
+    <div class="sec" style="margin-bottom:8px;" data-lang="booking.quickSlots">Quick-select available slots</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+      ${SLOTS.map(({ key, timeKey, dv, tv }) => `<div class="slot" onclick="selectSlot(this,'${dv}','${tv}',slotText('${key}'),timeText('${timeKey}'))"><div style="font-size:12px;font-weight:500;color:var(--g900);" data-lang="booking.slots.${key}">${slotText(key)}</div><div style="font-size:12px;color:var(--p600);" data-lang="booking.times.${timeKey}">${timeText(timeKey)}</div></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn pri" onclick="doSubmit()" data-lang="booking.confirm">Confirm booking</button>
+      <button class="btn" onclick="doReset()" data-lang="booking.startOver">Start over</button>
+      <button class="btn" onclick="location.href='index.html'" data-lang="common.cancel">Cancel</button>
+    </div>
+  </div>
+  <div id="conf-banner" style="display:none;background:var(--gbg);border:1px solid #9FE1CB;border-radius:var(--r-lg);padding:16px 20px;margin-top:14px;"></div>
+</div>`;
+
+    rdrSteps();
+    VC.init('book.html');
+    VC._applyLang();
+
+    setTimeout(() => { VC.bubble('normal', stepText(STEPS[0], 'hint'), stepText(STEPS[0], 'eg')); document.getElementById('bf-name').classList.add('fill'); }, 700);
+  </script>
+  <script src="Lana.js?v=20260516-text1"></script>
+</body>
+
+</html>

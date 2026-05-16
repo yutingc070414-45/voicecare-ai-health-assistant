@@ -1,0 +1,498 @@
+{
+  "nav": {
+    "home": "主页",
+    "book": "预约",
+    "report": "报告",
+    "history": "历史",
+    "contact": "联系"
+  },
+  "common": {
+    "voice": "语音模式",
+    "standard": "标准模式",
+    "signIn": "登录",
+    "signUp": "注册",
+    "settings": "设置",
+    "on": "开启",
+    "off": "关闭",
+    "ai": "VoiceCare AI",
+    "eg": "例如",
+    "confirmHint": "请说 <strong>\"确认\"</strong> 或 <strong>\"不，重新尝试\"</strong>。",
+    "stop": "停止",
+    "cancel": "取消",
+    "clear": "清除"
+  },
+  "settings": {
+    "language": "语言",
+    "voiceShortcuts": "语音快捷方式",
+    "voiceFeedback": "语音反馈",
+    "readActions": "朗读操作",
+    "confirmNav": "导航前确认",
+    "mode": "模式",
+    "voiceDefault": "语音（默认）",
+    "save": "保存设置",
+    "saved": "设置已保存"
+  },
+  "status": {
+    "all": "全部",
+    "upcoming": "即将到来",
+    "completed": "已完成",
+    "cancelled": "已取消",
+    "normal": "正常",
+    "high": "偏高",
+    "low": "偏低"
+  },
+  "services": {
+    "general": "全面体检",
+    "blood": "验血",
+    "xray": "X 光",
+    "ecg": "心电图 / 心脏筛查",
+    "specialist": "专科转诊"
+  },
+  "home": {
+    "welcome": "欢迎使用 VoiceCare",
+    "tagline": "只需开口说话——你的声音就是一切",
+    "meetLana": "认识 Lana——你的 AI 护理助手",
+    "wakeLana": "说 <strong>\"Hi Lana\"</strong> 唤醒她，或点击这里。她可以用语音帮你预约、朗读报告、填写表格、致电诊所等。",
+    "sayHiLana": "说“Hi Lana”",
+    "tapToWake": "或点击唤醒",
+    "makeAppt": "预约",
+    "bookDesc": "预约体检或检查",
+    "checkReport": "查看检查报告",
+    "reportDesc": "收听你的医疗结果",
+    "openHours": "开放时间",
+    "openHoursDetail": "周一至周五：上午 8 点至下午 6 点<br/>周六：上午 9 点至下午 1 点<br/>周日：休息",
+    "ourServices": "我们的服务",
+    "ourServicesDetail": "全面体检<br/>验血和 X 光<br/>心电图和专科转诊",
+    "voiceGuide": "语音指南",
+    "voiceGuideDetails": "指令帮助。<br/>说“预约”开始。<br/>全程免手动。",
+    "accessibilityStatement": "<strong style=\"color:#3C4448;\">无障碍声明：</strong> 委托按 WCAG 2.1 AA 进行正式无障碍审计，并确保患者健康数据符合适用的数据保护法规。",
+    "voiceHint": "说“预约”来预约，或说“报告”查看检查结果。",
+    "helpBubble": "我可以帮你<strong>预约</strong>或<strong>查看报告</strong>。你想做哪一个？",
+    "helpHint": "说“预约”或“报告”继续。"
+  },
+  "booking": {
+    "title": "预约",
+    "subtitle": "说出每个字段——AI 会理解并帮你填写",
+    "steps": {
+      "name": {
+        "lbl": "全名",
+        "hint": "说出你的全名。",
+        "eg": "“我的名字是 Sarah Ali”"
+      },
+      "dob": {
+        "lbl": "出生日期",
+        "hint": "说出你的出生日期。",
+        "eg": "“1990年3月12日出生”"
+      },
+      "service": {
+        "lbl": "服务类型",
+        "hint": "说出你需要的服务。",
+        "eg": "“血液检查”或“常规体检”"
+      },
+      "date": {
+        "lbl": "首选日期",
+        "hint": "说出你想预约的日期。",
+        "eg": "“下周一”或“4月28日”"
+      },
+      "time": {
+        "lbl": "首选时间",
+        "hint": "说出你想预约的时间。",
+        "eg": "“上午九点”或“下午两点半”"
+      }
+    },
+    "placeholders": {
+      "name": "说：\"我的名字是...\"",
+      "notes": "说“听写”后讲出备注，或在此输入..."
+    },
+    "selectService": "选择服务...",
+    "selectTime": "选择时间...",
+    "notes": "备注（可选）",
+    "quickSlots": "快速选择可用时段",
+    "confirm": "确认预约",
+    "startOver": "重新开始",
+    "confirmedTitle": "预约已确认！",
+    "nameLabel": "姓名：",
+    "serviceLabel": "服务：",
+    "dateLabel": "日期：",
+    "timeLabel": "时间：",
+    "viewHistory": "查看历史",
+    "formReset": "表单已重置。",
+    "msg": {
+      "understanding": "<span class=\"dots\"><span></span><span></span><span></span></span> Understanding <em>\"{text}\"</em> for <strong>{field}</strong>...",
+      "connectionIssue": "Connection issue. Please try again.",
+      "didYouMean": "I heard: <strong>\"{text}\"</strong><br/>Did you mean <strong>{value}</strong> for {field}?",
+      "fieldSet": "<strong>{field}</strong>: <strong>{value}</strong>",
+      "allFieldsFilled": "All fields filled! Say <strong>\"Confirm booking\"</strong> to finish.",
+      "nextField": "<strong>Next: {field}</strong> — {hint}",
+      "allDone": "All done. Say <strong>\"Confirm booking\"</strong>.",
+      "emptyFields": "Some required fields are still empty. Please fill in all fields before confirming.",
+      "sayConfirm": "Say confirm booking.",
+      "slotSet": "已选择 {date} {time}。请确认预约。",
+      "slotToast": "已选择时段：{date} {time}",
+      "retryType": "还是没有识别成功。请在下面输入<strong>{field}</strong>，或说<strong>“跳过”</strong>。",
+      "retryTry": "我听到<strong>“{text}”</strong>，但无法识别{field}。请试试：<strong>{example}</strong>",
+      "confirmed": "已确认：<strong>{service}</strong>，时间为 <strong>{date}</strong> <strong>{time}</strong>"
+    },
+    "speech": {
+      "didYouMean": "Did you mean {value} for {field}?",
+      "fieldSet": "{field} set to {value}",
+      "allFieldsFilled": "All fields completed. Say confirm booking to finish.",
+      "example": "For example: {example}",
+      "emptyFields": "Please fill in all required fields first.",
+      "startingOver": "Starting over.",
+      "confirmed": "预约已确认，服务是 {service}，日期 {date}，时间 {time}。"
+    },
+    "slots": {
+      "mon28": "4月28日 周一",
+      "tue29": "4月29日 周二",
+      "wed30": "4月30日 周三",
+      "thu1": "5月1日 周四",
+      "fri2a": "5月2日 周五",
+      "fri2b": "5月2日 周五"
+    },
+    "times": {
+      "t0900": "上午 9:00",
+      "t1000": "上午 10:00",
+      "t1400": "下午 2:00",
+      "t1100": "上午 11:00",
+      "t1500": "下午 3:00",
+      "t0800": "上午 8:00",
+      "t1600": "下午 4:00"
+    }
+  },
+  "report": {
+    "title": "检查报告",
+    "subtitle": "说“朗读”或询问你的结果",
+    "yourReports": "你的报告",
+    "readAloud": "朗读",
+    "testResults": "检查结果",
+    "ref": "参考：",
+    "doctorNote": "医生备注",
+    "askTitle": "询问你的结果",
+    "askExample": "说：<em>\"为什么我的胆固醇偏高？\"</em>",
+    "questionPlaceholder": "输入或说出问题...",
+    "askAI": "询问 AI",
+    "listHint": "说报告名称即可打开。<br/>说 <strong>\"朗读\"</strong> 即可收听。",
+    "ttsUnsupported": "TTS not supported",
+    "msg": {
+      "opened": "Opened: <strong>{type}</strong>. Say <strong>\"Read aloud\"</strong> to hear results.",
+      "readComplete": "Report read complete. Ask a question or say another report name.",
+      "reading": "Reading <strong>{type}</strong> aloud. Say <strong>\"Stop\"</strong> to pause.",
+      "lookingUp": "<span class=\"dots\"><span></span><span></span><span></span></span> Looking up your results...",
+      "askAnother": "Say another question or \"Read aloud\" for the full report.",
+      "answerError": "Could not fetch answer. Please try again.",
+      "stopped": "Reading stopped.",
+      "help": "Say <strong>\"Read aloud\"</strong>, or a report name: <strong>\"Blood test\"</strong>, <strong>\"Check-up\"</strong>, <strong>\"X-ray\"</strong>."
+    },
+    "speech": {
+      "opened": "Opened {type}. Say read aloud to hear results."
+    },
+    "from": "来自",
+    "reference": "参考范围：",
+    "notePrefix": "医生备注：",
+    "flowHint": "说“朗读”、选择报告，或询问一个问题"
+  },
+  "history": {
+    "title": "预约历史",
+    "subtitle": "说“即将到来”或“已完成”进行筛选",
+    "newAppointment": "+ 新预约",
+    "totalVisits": "总就诊次数",
+    "at": "于",
+    "viewReport": "查看报告",
+    "details": "详情",
+    "detailsShown": "Appointment details shown",
+    "noAppointments": "No {filter} appointments.",
+    "showing": "Showing <strong>{filter}</strong> appointments.",
+    "filterHint": "Say \"Upcoming\", \"Completed\" or \"All\" to filter.",
+    "help": "Say <strong>\"Upcoming\"</strong>, <strong>\"Completed\"</strong>, <strong>\"All\"</strong>, or <strong>\"Book\"</strong> for new appointment."
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "说“拨打”“邮箱”“听写”来留言，或说“发送消息”",
+    "addressTitle": "地址",
+    "addressValue": "voice care street<br/>voicecare, 00-000, world",
+    "sayAddress": "说：“地址”",
+    "phoneTitle": "电话",
+    "hoursShort": "周一至周五 8am-6pm，周六 9am-1pm",
+    "sayCall": "说：“拨打我们”",
+    "emailTitle": "邮箱",
+    "replyTime": "1 个工作日内回复",
+    "sayEmail": "说：“邮箱”",
+    "emergencyTitle": "医疗紧急情况？",
+    "emergencyText": "请立即拨打 <strong>999</strong>",
+    "sendMessage": "发送消息",
+    "yourName": "你的姓名",
+    "subject": "主题",
+    "message": "消息",
+    "dictateHint": "说 <strong>\"听写\"</strong> 开始说话 — AI 会自动转录。",
+    "dictate": "听写",
+    "sentToast": "Message sent!",
+    "placeholders": {
+      "name": "例如：Sarah Ali",
+      "email": "例如：sarah@email.com",
+      "message": "说“听写”来讲出你的消息，或在此输入..."
+    },
+    "subjects": {
+      "general": "一般咨询",
+      "appointment": "预约问题",
+      "report": "报告咨询",
+      "accessibility": "无障碍支持",
+      "feedback": "反馈"
+    },
+    "msg": {
+      "formCleared": "Form cleared. Say \"Dictate\" to speak your message.",
+      "phone": "Our phone: <strong>+00 000000000</strong>. Mon-Fri 8am-6pm, Sat 9am-1pm.",
+      "email": "Our email: <strong>hello@voicecare.com</strong>. We reply within 1 business day.",
+      "address": "We are at <strong>voice care street</strong>.",
+      "recorded": "Message recorded. Say <strong>\"Send message\"</strong> or press Send.",
+      "added": "Added: <em>\"{text}\"</em>. Say more or say <strong>\"Done\"</strong>.",
+      "help": "Say <strong>\"Dictate\"</strong> to speak your message, <strong>\"Call us\"</strong>, <strong>\"Email\"</strong> or <strong>\"Address\"</strong>.",
+      "dictationOn": "<strong>Dictation on.</strong> Speak your message. Say <strong>\"Done\"</strong> when finished.",
+      "required": "Please fill in your name, email and message before sending.",
+      "sent": "Message sent! We will reply to <strong>{name}</strong> within one business day."
+    },
+    "speech": {
+      "phone": "Our phone number is plus 00 000 000 000. Open Monday to Friday 8am to 6pm.",
+      "email": "Our email is hello at voicecare dot com.",
+      "address": "We are at 12 Healthcare Avenue, Kuala Lumpur.",
+      "dictationOn": "Dictation mode on. Speak your message and say done when finished.",
+      "required": "Please fill in all required fields.",
+      "sent": "Message sent. We will reply within one business day."
+    }
+  },
+  "auth": {
+    "logoTag": "你的健康，被听见",
+    "backHome": "← 返回主页",
+    "voicePrompt": "说 <strong>\"登录\"</strong> 或 <strong>\"创建账户\"</strong> 开始。",
+    "welcomeBack": "欢迎回来",
+    "signInSubtitle": "登录以访问你的健康记录",
+    "emailAddress": "电子邮箱地址",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "没有账户？ <a href=\"#\" style=\"color:var(--p600);font-weight:500;\" onclick=\"showTab('up')\">注册</a>",
+    "createAccount": "创建账户",
+    "signUpSubtitle": "加入 VoiceCare — 免手动医疗服务",
+    "firstName": "名",
+    "lastName": "姓",
+    "terms": "注册即表示你同意 VoiceCare 条款。你的数据会严格保密。",
+    "haveAccount": "已有账户？ <a href=\"#\" style=\"color:var(--p600);font-weight:500;\" onclick=\"showTab('in')\">登录</a>",
+    "switchSignIn": "Switching to <strong>Sign in</strong>. Please enter your details.",
+    "switchSignUp": "Switching to <strong>Sign up</strong>. Let's create your account.",
+    "help": "Say <strong>\"Sign in\"</strong> to log in or <strong>\"Create account\"</strong> to register.",
+    "heard": "I heard <strong>\"{text}\"</strong>. Say <strong>\"Sign in\"</strong> or <strong>\"Create account\"</strong>.",
+    "signingIn": "Signing in...",
+    "accountCreated": "Account created! Welcome to VoiceCare.",
+    "welcomeSpeech": "Welcome to VoiceCare. Say sign in or create account to begin.",
+    "placeholders": {
+      "email": "例如：sarah@email.com",
+      "password": "输入你的密码",
+      "firstName": "Sarah",
+      "lastName": "Ali",
+      "emailShort": "sarah@email.com",
+      "createPassword": "创建密码"
+    }
+  },
+  "lana": {
+    "micTitle": "允许麦克风以进行免手动操作",
+    "micBody": "VoiceCare 设计为完全免手动。只需允许一次麦克风，然后随时说 <strong>\"Hi Lana\"</strong>。",
+    "allowMic": "是，允许麦克风",
+    "sayHi": "说“Hi Lana”",
+    "ready": "准备就绪",
+    "waiting": "等待你的声音...",
+    "call": "拨打",
+    "help": "帮助",
+    "sleep": "休眠",
+    "requesting": "Requesting...",
+    "tryAgain": "Try again",
+    "micBlocked": "<strong style=\"color:#A32D2D\">Blocked.</strong> Click the lock icon in the address bar, set Microphone to Allow, then refresh.",
+    "listening": "正在聆听...",
+    "greetHome": "你好！我是 Lana，你的 VoiceCare 护理助手。说“预约”可以预约，或说“报告”查看结果。",
+    "greetBook": "你好！我在预约页面。说“填写表格”，我会一步一步帮你完成。",
+    "greetReport": "你好！你的报告在这里。说报告名称，或说“朗读”来听结果。",
+    "greetHistory": "你好！这里是你的预约历史。说“即将到来”或“已完成”来筛选。",
+    "greetContact": "你好！说“听写”可以语音留言，或说“致电诊所”。",
+    "greetSignin": "你好！说“登录”或“创建账户”继续。",
+    "greetDefault": "你好！我是 Lana。需要我帮你做什么？",
+    "callingClinic": "Calling VoiceCare clinic now. The number is plus 60 3 2345 6789.",
+    "scrollingDown": "Scrolling down.",
+    "scrollingUp": "Scrolling up.",
+    "backToTop": "Back to top.",
+    "helpText": "我可以通过提问帮你预约、查看报告、致电诊所、切换页面、填写表格、滚动页面和点击按钮。告诉我你需要什么。",
+    "helpHint": "试试：“预约” · “报告” · “历史” · “致电诊所” · “帮助”",
+    "sleeping": "休眠中",
+    "speaking": "正在说话",
+    "thinking": "正在思考",
+    "thinkingHint": "让我想一下...",
+    "examplePrefix": "例如：",
+    "didNotCatch": "我没有听清。",
+    "fieldSet": "{field}已设为{value}",
+    "bookingGo": "我带你去预约页面，并一步一步帮你填写。",
+    "bookingIntro": "我会帮你预约。我会问你几个问题。",
+    "bookingSummary": "全部完成！这是你的预约摘要：{summary}。说“确认预约”提交，或告诉我哪里需要修改。",
+    "confirmHint": "说“确认预约”提交",
+    "clicked": "完成。我已为你点击 {label}。",
+    "buttonNotFound": "我找不到这个按钮。请直接点击。",
+    "filled": "已经填写好了。",
+    "clicking": "正在点击。",
+    "onMyWay": "马上为你打开。",
+    "callingShort": "正在拨打。",
+    "tryMainCommands": "你可以说“预约”、“报告”或“帮助”。",
+    "notSure": "我不太确定。请试试：预约、报告、历史、致电诊所或帮助。",
+    "navHome": "正在返回主页。",
+    "navReport": "正在打开你的报告。",
+    "navHistory": "这是你的历史记录。",
+    "navContact": "正在打开联系页面。",
+    "navSignin": "正在打开登录页面。",
+    "navSignup": "正在打开注册页面。",
+    "bookingLabels": {
+      "name": "姓名",
+      "sex": "性别",
+      "dob": "出生日期",
+      "ic": "证件号码",
+      "phone": "电话",
+      "service": "服务",
+      "date": "日期",
+      "time": "时间"
+    },
+    "bookingSteps": {
+      "name": {
+        "ask": "你的全名是什么？",
+        "hint": "“我的名字是 Sarah Ali”"
+      },
+      "sex": {
+        "ask": "你的性别是什么？男或女？",
+        "hint": "“女”或“男”"
+      },
+      "dob": {
+        "ask": "你的出生日期是什么？",
+        "hint": "“1990年3月12日出生”"
+      },
+      "ic": {
+        "ask": "你的身份证或护照号码是什么？",
+        "hint": "“我的证件号码是 901212 04 1234”"
+      },
+      "phone": {
+        "ask": "你的电话号码是什么？",
+        "hint": "“我的号码是 012 345 6789”"
+      },
+      "service": {
+        "ask": "你需要哪项服务？血液检查、常规体检、X 光、心电图或专科转诊？",
+        "hint": "“血液检查”"
+      },
+      "date": {
+        "ask": "你想预约哪一天？",
+        "hint": "“下周一”或“4月28日”"
+      },
+      "time": {
+        "ask": "你想预约几点？",
+        "hint": "“上午九点”或“下午两点”"
+      }
+    }
+  },
+  "reportData": {
+    "r1": {
+      "type": "血液检查",
+      "date": "2026年4月22日",
+      "note": "总体正常。胆固醇略高，建议调整饮食，并在3个月后复查。"
+    },
+    "r2": {
+      "type": "常规体检",
+      "date": "2026年3月10日",
+      "note": "所有常规检查都在预期范围内。请继续保持目前的运动和睡眠习惯。"
+    },
+    "r3": {
+      "type": "胸部 X 光",
+      "date": "2026年1月5日",
+      "note": "未发现急性异常。如咳嗽、发热或呼吸症状持续，请复诊。"
+    },
+    "items": {
+      "haemoglobin": {
+        "name": "血红蛋白",
+        "ref": "13.5–17.5"
+      },
+      "wbc": {
+        "name": "白细胞",
+        "ref": "4.0–11.0"
+      },
+      "platelets": {
+        "name": "血小板",
+        "ref": "150–400"
+      },
+      "glucose": {
+        "name": "血糖",
+        "ref": "3.9–6.1"
+      },
+      "cholesterol": {
+        "name": "胆固醇",
+        "ref": "<5.2"
+      },
+      "hdl": {
+        "name": "高密度脂蛋白",
+        "ref": ">1.0"
+      },
+      "bp": {
+        "name": "血压",
+        "ref": "<120/80"
+      },
+      "pulse": {
+        "name": "脉搏",
+        "ref": "60–100"
+      },
+      "temp": {
+        "name": "体温",
+        "ref": "36.1–37.2"
+      },
+      "lungs": {
+        "name": "肺野",
+        "ref": "清晰"
+      },
+      "heart": {
+        "name": "心脏大小",
+        "ref": "正常"
+      },
+      "findings": {
+        "name": "检查发现",
+        "ref": "无"
+      },
+      "hr": {
+        "name": "心率",
+        "ref": "60–100"
+      },
+      "bmi": {
+        "name": "身体质量指数",
+        "ref": "18.5–24.9"
+      },
+      "heartSize": {
+        "name": "心脏大小",
+        "ref": "正常"
+      },
+      "bone": {
+        "name": "骨骼结构",
+        "ref": "正常"
+      }
+    },
+    "values": {
+      "clear": "清晰",
+      "normal": "正常",
+      "noAbnormality": "无异常"
+    }
+  },
+  "historyData": {
+    "types": {
+      "blood": "血液检查",
+      "checkup": "常规体检",
+      "xray": "胸部 X 光",
+      "ecg": "心电图 / 心脏筛查",
+      "specialist": "专科转诊"
+    },
+    "dates": {
+      "h1": "2026年4月28日 周一",
+      "h2": "2026年4月22日",
+      "h3": "2026年3月10日",
+      "h4": "2026年1月5日",
+      "h5": "2025年11月18日",
+      "h6": "2025年9月2日",
+      "h7": "2025年6月12日"
+    }
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VoiceCare — Reports</title>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+</head><body>
+<div class="shell" id="root"></div>
+<script src="core.js?v=20260516-lang4"></script>
+<script>
+const RPT=[
+  {id:'r1',doctor:'Dr. Lim Wei',
+   items:[{key:'haemoglobin',v:'14.2 g/dL',r:'13.5–17.5',s:'normal'},{key:'wbc',v:'6.8 x10⁹/L',r:'4.0–11.0',s:'normal'},{key:'platelets',v:'210 x10⁹/L',r:'150–400',s:'normal'},{key:'glucose',v:'5.9 mmol/L',r:'3.9–6.1',s:'normal'},{key:'cholesterol',v:'6.1 mmol/L',r:'<5.2',s:'high'},{key:'hdl',v:'1.2 mmol/L',r:'>1.0',s:'normal'}]},
+  {id:'r2',doctor:'Dr. Siti Nora',
+   items:[{key:'bp',v:'118/76 mmHg',r:'<120/80',s:'normal'},{key:'hr',v:'72 bpm',r:'60–100',s:'normal'},{key:'bmi',v:'23.4',r:'18.5–24.9',s:'normal'},{key:'temp',v:'36.6 °C',r:'36.1–37.2',s:'normal'}]},
+  {id:'r3',doctor:'Dr. Ahmad Faris',
+   items:[{key:'lungs',vKey:'clear',s:'normal'},{key:'heartSize',vKey:'normal',s:'normal'},{key:'bone',vKey:'noAbnormality',s:'normal'}]},
+];
+let AR=RPT[0];
+function sc(s){return s==='high'?'var(--abg)':s==='low'?'var(--rbg)':'var(--gbg)';}
+function tc(s){return s==='high'?'var(--amber)':s==='low'?'var(--red)':'var(--green)';}
+function rptText(id, field){ return VC.t(`reportData.${id}.${field}`); }
+function itemText(item, field='name'){ return VC.t(`reportData.items.${item.key}.${field}`); }
+function itemValue(item){ return item.vKey ? VC.t(`reportData.values.${item.vKey}`) : item.v; }
+function openR(id){
+  AR=RPT.find(r=>r.id===id)||RPT[0];
+  document.querySelectorAll('.rl-item').forEach(el=>el.style.borderColor=el.dataset.id===id?'var(--p400)':'var(--p100)');
+  renderD();
+  VC.bubble('ok',`${IC.check()} ${VC.tf('report.msg.opened',{type:rptText(AR.id,'type')})}`,'');
+  VC.speak(VC.tf('report.speech.opened',{type:rptText(AR.id,'type')}),()=>setTimeout(()=>VC.startSR(),400));
+}
+function readR(){
+  if(!('speechSynthesis' in window)){VC.toast(VC.t('report.ttsUnsupported'));return;}
+  speechSynthesis.cancel();
+  const txt=rptText(AR.id,'type')+' '+VC.t('report.from')+' '+rptText(AR.id,'date')+'. '+AR.items.map(i=>itemText(i)+': '+itemValue(i)+', '+VC.t('report.reference')+' '+itemText(i,'ref')+', '+VC.t('status.'+i.s)).join('. ')+'. '+VC.t('report.notePrefix')+' '+rptText(AR.id,'note');
+  const u=new SpeechSynthesisUtterance(txt);u.rate=0.9;u.onend=()=>{VC.bubble('normal',VC.t('report.msg.readComplete'),'');setTimeout(()=>VC.startSR(),400);};
+  speechSynthesis.speak(u);
+  VC.bubble('ok',VC.tf('report.msg.reading',{type:rptText(AR.id,'type')}),'');
+}
+async function askQ(q){
+  if(!q.trim())return;
+  VC.micState('thinking');
+  VC.bubble('dim',VC.t('report.msg.lookingUp'),'');
+  const p=`You are a helpful medical assistant explaining results to a patient simply and reassuringly.\nReport: ${rptText(AR.id,'type')} from ${rptText(AR.id,'date')}.\nResults: ${AR.items.map(i=>itemText(i)+':'+itemValue(i)+'(ref '+itemText(i,'ref')+', '+VC.t('status.'+i.s)+')').join(', ')}\nNote: ${rptText(AR.id,'note')}\nPatient asked: "${q}"\nGive a clear, friendly 2-sentence answer. Do not diagnose. Suggest speaking to doctor for details.`;
+  try{const a=await VC.claude(p);VC.micState('idle');VC.bubble('normal',a,VC.t('report.msg.askAnother'));VC.speak(a,()=>setTimeout(()=>VC.startSR(),400));}
+  catch(e){VC.micState('err');VC.bubble('err',VC.t('report.msg.answerError'),'');}
+}
+function renderD(){
+  document.getElementById('rpt-detail').innerHTML=`
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+    <div><h2 style="font-size:18px;font-weight:600;color:var(--g900);margin-bottom:3px;" data-lang="reportData.${AR.id}.type">${rptText(AR.id,'type')}</h2><p style="font-size:13px;color:var(--g500);margin:0;"><span data-lang="reportData.${AR.id}.date">${rptText(AR.id,'date')}</span> · ${AR.doctor}</p></div>
+    <div style="display:flex;gap:8px;"><button class="btn pri" onclick="readR()" style="font-size:12px;padding:7px 14px;">${IC.mic2()} <span data-lang="report.readAloud">Read aloud</span></button><button class="btn" onclick="speechSynthesis.cancel();VC.bubble('normal',VC.t('report.msg.stopped'),'');" style="font-size:12px;padding:7px 14px;" data-lang="common.stop">Stop</button></div>
+  </div>
+  <div class="sec" data-lang="report.testResults">Test results</div>
+  <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
+    ${AR.items.map(it=>`<div style="display:flex;align-items:center;justify-content:space-between;background:${sc(it.s)};border-radius:var(--r-md);padding:10px 14px;">
+      <div><div style="font-size:13px;font-weight:500;color:var(--g900);" data-lang="reportData.items.${it.key}.name">${itemText(it)}</div><div style="font-size:11px;color:var(--g500);margin-top:1px;"><span data-lang="report.ref">Ref:</span> <span data-lang="reportData.items.${it.key}.ref">${itemText(it,'ref')}</span></div></div>
+      <div style="text-align:right;"><div style="font-size:15px;font-weight:600;color:${tc(it.s)};"${it.vKey?` data-lang="reportData.values.${it.vKey}"`:''}>${itemValue(it)}</div><span class="badge" style="background:${sc(it.s)};color:${tc(it.s)};" data-lang="status.${it.s}">${VC.t('status.'+it.s)}</span></div>
+    </div>`).join('')}
+  </div>
+  <div style="background:var(--p50);border-radius:var(--r-md);padding:12px 14px;border:1px solid var(--p100);margin-bottom:12px;">
+    <div class="sec" style="margin-bottom:5px;" data-lang="report.doctorNote">Doctor's note</div>
+    <p style="font-size:13px;color:var(--g700);line-height:1.65;margin:0;" data-lang="reportData.${AR.id}.note">${rptText(AR.id,'note')}</p>
+  </div>
+  <div style="background:var(--p50);border-radius:var(--r-md);padding:10px 14px;border:1px solid var(--p100);">
+    <div class="sec" style="margin-bottom:5px;" data-lang="report.askTitle">Ask about your results</div>
+    <p style="font-size:12px;color:var(--g500);margin:0 0 8px;" data-lang="report.askExample">Say: <em>"Why is my cholesterol high?"</em></p>
+    <div style="display:flex;gap:8px;"><input type="text" id="q-in" placeholder="Type or speak a question..." data-lang-placeholder="report.questionPlaceholder" style="flex:1;font-size:13px;"/><button class="btn pri" onclick="askQ(document.getElementById('q-in').value)" style="font-size:12px;padding:7px 14px;flex-shrink:0;" data-lang="report.askAI">Ask AI</button></div>
+  </div>`;
+  VC._applyLang();
+}
+VC.flow={
+  hint:()=>VC.t('report.flowHint'),
+  handle:async(text,lower)=>{
+    if(/read|read aloud|speak|listen/.test(lower)){readR();return;}
+    if(/stop|pause|quiet/.test(lower)){speechSynthesis.cancel();VC.bubble('normal',VC.t('report.msg.stopped'),'');return;}
+    if(/blood|haemo/.test(lower)){openR('r1');return;}
+    if(/check.?up|general|check up/.test(lower)){openR('r2');return;}
+    if(/xray|x-ray|chest|lung/.test(lower)){openR('r3');return;}
+    if(/what|explain|why|how|normal|high|low|mean/.test(lower)){askQ(text);return;}
+    VC.bubble('normal',VC.t('report.msg.help'),'');
+    setTimeout(()=>VC.startSR(),400);
+  }
+};
+document.getElementById('root').innerHTML=buildShell('report.html')+`
+<div class="page-content">
+  <div style="margin-bottom:14px;"><p class="ptitle" data-lang="report.title">Examination reports</p><p class="psub" data-lang="report.subtitle">Say "Read aloud" or ask a question about your results</p></div>
+  <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;height:calc(100% - 80px);">
+    <div>
+      <div class="sec" data-lang="report.yourReports">Your reports</div>
+      ${RPT.map(r=>`<div class="card rl-item hover" data-id="${r.id}" onclick="openR('${r.id}')" style="cursor:pointer;margin-bottom:9px;${r.id===AR.id?'border-color:var(--p400);':''}">
+        <div style="font-size:14px;font-weight:500;color:var(--g900);margin-bottom:3px;" data-lang="reportData.${r.id}.type">${rptText(r.id,'type')}</div>
+        <div style="font-size:11px;color:var(--g500);margin-bottom:6px;"><span data-lang="reportData.${r.id}.date">${rptText(r.id,'date')}</span> · ${r.doctor}</div>
+        <span class="badge bg" data-lang="status.normal">Normal</span>
+      </div>`).join('')}
+      <div style="margin-top:10px;background:var(--p50);border-radius:var(--r-md);padding:10px 12px;font-size:12px;color:var(--p600);" data-lang="report.listHint">Say report name to open.<br/>Say <strong>"Read aloud"</strong> to hear.</div>
+    </div>
+    <div class="card" style="overflow-y:auto;" id="rpt-detail"></div>
+  </div>
+</div>`;
+renderD();
+VC.init('report.html');
+</script>
+<script src="Lana.js?v=20260516-text1"></script>
+</body>
+</html>

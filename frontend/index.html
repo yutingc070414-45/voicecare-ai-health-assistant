@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>VoiceCare — Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <div class="shell" id="root"></div>
+  <!-- core.js MUST load first — it defines IC, VC, buildShell -->
+  <script src="core.js?v=20260516-lang4"></script>
+  <script>
+    /* ---- HOME PAGE FLOW ---- */
+    VC.flow = {
+      hint: () => VC.t('home.voiceHint'),
+      handle: async (text, lower) => {
+        if (/book|appointment|schedule/.test(lower)) { VC.nav('book.html'); return; }
+        if (/report|result|test result/.test(lower)) { VC.nav('report.html'); return; }
+        if (/history|past|previous/.test(lower)) { VC.nav('history.html'); return; }
+        if (/contact|call|email us/.test(lower)) { VC.nav('contact.html'); return; }
+        VC.bubble('normal', VC.t('home.helpBubble'), VC.t('home.helpHint'));
+        setTimeout(() => VC.startSR(), 400);
+      }
+    };
+
+    /* ---- BUILD PAGE ---- */
+    document.getElementById('root').innerHTML = buildShell('index.html') + `
+<div class="page-content">
+  <div style="text-align:center;padding:10px 0 20px;">
+    <p style="font-family:'DM Serif Display',serif;font-size:44px;color:var(--g900);margin-bottom:10px;" data-lang="home.welcome">Welcome to VoiceCare</p>
+    <p style="font-size:18px;color:var(--g500);" data-lang="home.tagline">Just speak — your voice is all you need</p>
+  </div>
+
+  <!-- Lana wake hint banner -->
+  <div onclick="Lana._onBubbleClick()" style="display:flex;align-items:center;gap:24px;background:linear-gradient(135deg,var(--p50),var(--p100));border:1.5px solid var(--p400);border-radius:16px;padding:20px 24px;margin-bottom:18px;cursor:pointer;transition:transform .15s;box-shadow:0 4px 18px rgba(181,104,125,.12);"
+       onmouseenter="this.style.transform='scale(1.01)'" onmouseleave="this.style.transform='scale(1)'">
+    <div style="width:82px;height:82px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+      <img src="Lana-char.svg" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
+    </div>
+    <div style="flex:1;">
+      <div style="font-size:20px;font-weight:600;color:var(--p600);margin-bottom:8px;
+      " data-lang="home.meetLana">Meet Lana — your AI nurse assistant</div>
+      <div style="font-size:16px;color:var(--p800);line-height:1.6;
+      " data-lang="home.wakeLana">Say Hi "Lana" to wake her up, or tap here. She can book appointments, read reports, fill forms, call the clinic and more — all by voice!</div>
+    </div>
+    <div style="flex-shrink:0;text-align:center;">
+      <div style="background:var(--p400);color:#fff;border-radius:20px;padding:10px 22px;font-size:15px;font-weight:500;margin-bottom:8px;
+      " data-lang="home.sayHiLana">Say "Hi Lana"</div>
+      <div style="font-size:12px;color:var(--p600);
+      " data-lang="home.tapToWake">or tap to wake</div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:22px;">
+    <div class="card hover" style="cursor:pointer;min-height:220px;display:flex;align-items:center;justify-content:center;" onclick="VC.nav('book.html')">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:0;text-align:center;">
+        <div style="width:96px;height:96px;background:var(--p50);border-radius:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${IC.calendar()}</div>
+        <div>
+          <h3 style="font-size:24px;font-weight:600;color:var(--g900);margin-bottom:8px;
+          " data-lang="home.makeAppt">Make an appointment</h3>
+          <p style="font-size:16px;color:var(--g500);margin:0;
+          " data-lang="home.bookDesc">Book a check-up or examination</p>
+        </div>
+      </div>
+    
+      
+    </div>
+    <div class="card hover" style="cursor:pointer;min-height:220px;display:flex;align-items:center;justify-content:center;" onclick="VC.nav('report.html')">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:0;text-align:center;">
+        <div style="width:96px;height:96px;background:var(--p50);border-radius:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${IC.ecg()}</div>
+        <div>
+          <h3 style="font-size:24px;font-weight:600;color:var(--g900);margin-bottom:8px;
+          " data-lang="home.checkReport">Check examination report</h3>
+          <p style="font-size:16px;color:var(--g500);margin:0;
+          " data-lang="home.reportDesc">Listen to your medical results</p>
+        </div>
+      </div>
+    
+      
+    </div>
+  </div>
+  <div class="g3">
+    <div style="background:var(--p50);border-radius:var(--r-md);padding:28px 30px;min-height:150px;">
+      <div class="sec" style="margin-bottom:12px;
+      " data-lang="home.openHours">Opening hours</div>
+      <div style="font-size:16px;color:var(--g700);line-height:1.9;margin:0;" data-lang="home.openHoursDetail">
+        Mon–Fri: 8am–6pm<br/>
+        Saturday: 9am–1pm<br/>
+        Sunday: Closed
+      </div>
+    </div>
+
+    <div style="background:var(--p50);border-radius:var(--r-md);padding:28px 30px;min-height:150px;">
+      <div class="sec" style="margin-bottom:12px;
+      " data-lang="home.ourServices">Our services</div>
+      <div style="font-size:16px;color:var(--g700);line-height:1.9;margin:0;" data-lang="home.ourServicesDetail">
+        General check-up<br/>
+        Blood test &amp; X-ray<br/>
+        ECG &amp; specialist referral
+      </div>
+    </div>
+
+    <div style="background:var(--p50);border-radius:var(--r-md);padding:28px 30px;min-height:150px;">
+      <div class="sec" style="margin-bottom:12px;
+      " data-lang="home.voiceGuide">Voice guide</div>
+      <div style="font-size:16px;color:var(--g700);line-height:1.9;margin:0;" data-lang="home.voiceGuideDetails">
+        Help for commands.<br/>
+        Say "Book" to start.<br/>
+        Fully hands-free.
+    </div>
+  </div>
+</div> <!-- end of g3 -->
+</div> <!-- end of page-content -->
+
+<div style="
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin-top:28px;
+  font-size:14px;
+  color:#8A9499;
+">
+
+  <div 
+    style="max-width:1200px; text-align:center;"
+    data-lang="home.accessibilityStatement">
+
+    <strong style="color:#3C4448;">
+      Accessibility Statement:
+    </strong>
+
+    Commission a formal accessibility audit against WCAG 2.1 AA and ensure compliance with applicable local data protection regulations for patient health data.
+
+  </div>
+
+</div>
+
+`;
+
+    VC.init('index.html');
+  </script>
+  <script src="Lana.js?v=20260516-text1"></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "voicecare-backend",
+  "version": "1.0.0",
+  "description": "Backend API for VoiceCare booking, contact, authentication, login, register, and voice assistant functions.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "voicecare",
+    "backend",
+    "booking",
+    "healthcare",
+    "voice-assistant"
+  ],
+  "author": "Yuting Chen",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.3"
+  }
+}

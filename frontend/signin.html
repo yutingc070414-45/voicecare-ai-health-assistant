@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>VoiceCare — Sign In</title>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+  html,body{overflow:auto;height:auto;}
+  .auth-wrap{min-height:100vh;background:var(--p50);display:flex;flex-direction:column;}
+  .auth-top{display:flex;align-items:center;justify-content:space-between;padding:12px 28px;background:var(--white);border-bottom:1px solid var(--p100);}
+  .auth-body{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 16px;}
+  .auth-card{background:var(--white);border:1px solid var(--p100);border-radius:var(--r-xl);padding:32px 28px;width:100%;max-width:440px;}
+  .tab-row{display:flex;background:var(--p50);border-radius:30px;padding:3px;margin-bottom:22px;}
+  .tab-btn{flex:1;text-align:center;padding:8px;border-radius:30px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border:none;cursor:pointer;background:none;color:var(--g500);transition:all .2s;}
+  .tab-btn.active{background:var(--p400);color:var(--white);}
+  .voice-hint-box{display:flex;align-items:flex-start;gap:12px;background:var(--p50);border:1px solid var(--p100);border-radius:var(--r-lg);padding:12px 16px;margin-bottom:18px;}
+  .smico{width:42px;height:42px;background:var(--p400);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:2px solid var(--p100);transition:background .2s;}
+  .smico:hover{background:var(--p600);}
+  .smico.listening{animation:pulse 1.3s infinite;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(212,83,126,.4);}50%{box-shadow:0 0 0 10px rgba(212,83,126,0);}}
+</style>
+</head>
+<body>
+<!-- Load core.js for IC and VC utilities -->
+<script src="core.js?v=20260516-lang4"></script>
+<script>
+// Override mode apply so it doesn't crash without .shell
+const _origApply = VC.applyMode.bind(VC);
+VC.applyMode = function(m){ this.mode=m; localStorage.setItem('vc_mode',m); };
+</script>
+
+<div class="auth-wrap">
+  <div class="auth-top">
+    <a href="index.html" style="display:flex;align-items:center;gap:9px;text-decoration:none;">
+    
+      <div id="auth-logo"></div>
+      <div><div style="font-size:17px;font-weight:600;color:var(--p600);">VoiceCare</div><div style="font-size:10px;color:var(--p400);" data-lang="auth.logoTag">Your health, heard</div></div>
+    </a>
+    <a href="index.html" class="btn" style="font-size:12px;padding:6px 14px;" data-lang="auth.backHome">← Back to home</a>
+  </div>
+  <div class="auth-body">
+    <div class="auth-card">
+      <div class="voice-hint-box">
+        <div class="smico" id="s-mic" onclick="togSR()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="8" y="2" width="8" height="12" rx="4" fill="white"/><path d="M4 12 Q4 20 12 20 Q20 20 20 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/><rect x="11" y="20" width="2" height="3" rx="1" fill="white"/><rect x="8" y="23" width="8" height="1.5" rx="0.75" fill="white"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:10px;font-weight:600;color:var(--p600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;" data-lang="common.ai">VoiceCare AI</div>
+          <div style="font-size:13px;font-weight:500;color:var(--g900);" id="s-bubble" data-lang="auth.voicePrompt">Say <strong>"Sign in"</strong> or <strong>"Create account"</strong> to begin.</div>
+          <div style="font-size:11px;color:var(--g500);margin-top:3px;font-style:italic;" id="s-trans"></div>
+        </div>
+      </div>
+      <div class="tab-row">
+        <button class="tab-btn active" id="tab-in" onclick="showTab('in')" data-lang="common.signIn">Sign in</button>
+        <button class="tab-btn"        id="tab-up" onclick="showTab('up')" data-lang="common.signUp">Sign up</button>
+      </div>
+      <!-- Sign in form -->
+      <div id="form-in">
+        <div style="text-align:center;margin-bottom:18px;">
+          <p style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--g900);margin-bottom:4px;" data-lang="auth.welcomeBack">Welcome back</p>
+          <p style="font-size:13px;color:var(--g500);margin:0;" data-lang="auth.signInSubtitle">Sign in to access your health records</p>
+        </div>
+        <div class="fg"><label data-lang="auth.emailAddress">Email address</label><input type="email" id="si-email" placeholder="e.g. sarah@email.com" data-lang-placeholder="auth.placeholders.email"/></div>
+        <div class="fg"><label data-lang="auth.password">Password</label><input type="password" id="si-pass" placeholder="Enter your password" data-lang-placeholder="auth.placeholders.password"/></div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px;"><a href="#" style="font-size:12px;color:var(--p600);text-decoration:none;" data-lang="auth.forgotPassword">Forgot password?</a></div>
+        <button class="btn pri" style="width:100%;justify-content:center;" onclick="doIn()" data-lang="common.signIn">Sign in</button>
+        <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--g500);" data-lang="auth.noAccount">No account? <a href="#" style="color:var(--p600);font-weight:500;" onclick="showTab('up')">Sign up</a></div>
+      </div>
+      <!-- Sign up form -->
+      <div id="form-up" style="display:none;">
+        <div style="text-align:center;margin-bottom:18px;">
+          <p style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--g900);margin-bottom:4px;" data-lang="auth.createAccount">Create account</p>
+          <p style="font-size:13px;color:var(--g500);margin:0;" data-lang="auth.signUpSubtitle">Join VoiceCare — hands-free healthcare</p>
+        </div>
+        <div class="g2">
+          <div class="fg"><label data-lang="auth.firstName">First name</label><input type="text" id="su-first" placeholder="Sarah" data-lang-placeholder="auth.placeholders.firstName"/></div>
+          <div class="fg"><label data-lang="auth.lastName">Last name</label><input type="text" id="su-last" placeholder="Ali" data-lang-placeholder="auth.placeholders.lastName"/></div>
+        </div>
+        <div class="fg"><label data-lang="contact.emailTitle">Email</label><input type="email" id="su-email" placeholder="sarah@email.com" data-lang-placeholder="auth.placeholders.emailShort"/></div>
+        <div class="fg"><label data-lang="booking.steps.dob.lbl">Date of birth</label><input type="date" id="su-dob"/></div>
+        <div class="fg"><label data-lang="auth.password">Password</label><input type="password" id="su-pass" placeholder="Create a password" data-lang-placeholder="auth.placeholders.createPassword"/></div>
+        <div style="background:var(--p50);border-radius:var(--r-sm);padding:8px 12px;margin-bottom:12px;font-size:11px;color:var(--p600);line-height:1.5;" data-lang="auth.terms">By signing up you agree to VoiceCare's terms. Your data is kept strictly private.</div>
+        <button class="btn pri" style="width:100%;justify-content:center;" onclick="doUp()" data-lang="auth.createAccount">Create account</button>
+        <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--g500);" data-lang="auth.haveAccount">Have an account? <a href="#" style="color:var(--p600);font-weight:500;" onclick="showTab('in')">Sign in</a></div>
+      </div>
+    </div>
+  </div>
+  <div id="vc-toast"></div>
+</div>
+
+<script>
+// Inject logo now that IC is available
+document.getElementById('auth-logo').innerHTML = '<img src="voicecare.svg" style="width:104px;height:104px;object-fit:contain;display:block;" alt="VoiceCare"/>';
+
+let sListening=false, sRecog=null;
+function initSR(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR)return;
+  sRecog=new SR(); sRecog.continuous=false; sRecog.interimResults=true; sRecog.lang='en-US';
+  sRecog.onstart=()=>{ sListening=true; document.getElementById('s-mic').classList.add('listening'); document.getElementById('s-trans').textContent='Listening...'; };
+  sRecog.onresult=(e)=>{ let f='',i=''; for(let x=e.resultIndex;x<e.results.length;x++){const t=e.results[x][0].transcript;e.results[x].isFinal?f+=t:i+=t;} document.getElementById('s-trans').textContent=f||i; if(f)handleInput(f.trim()); };
+  sRecog.onerror=()=>{ sListening=false; document.getElementById('s-mic').classList.remove('listening'); };
+  sRecog.onend=()=>{ sListening=false; document.getElementById('s-mic').classList.remove('listening'); };
+}
+function togSR(){ if(!sRecog)initSR(); if(!sRecog)return; sListening?sRecog.stop():sRecog.start(); }
+function setBubble(html){ document.getElementById('s-bubble').innerHTML=html; }
+function handleInput(text){
+  const lower=text.toLowerCase();
+  if(/sign in|log in|login/.test(lower)){showTab('in');setBubble(VC.t('auth.switchSignIn'));return;}
+  if(/sign up|register|create account/.test(lower)){showTab('up');setBubble(VC.t('auth.switchSignUp'));return;}
+  if(/home|back|cancel/.test(lower)){location.href='index.html';return;}
+  if(/help/.test(lower)){setBubble(VC.t('auth.help'));return;}
+  setBubble(VC.tf('auth.heard',{text:VC.esc(text)}));
+}
+function showTab(t){
+  document.getElementById('form-in').style.display=t==='in'?'block':'none';
+  document.getElementById('form-up').style.display=t==='up'?'block':'none';
+  document.getElementById('tab-in').className='tab-btn'+(t==='in'?' active':'');
+  document.getElementById('tab-up').className='tab-btn'+(t==='up'?' active':'');
+}
+
+async function doIn() {
+  const email = document.getElementById("si-email").value;
+  const password = document.getElementById("si-pass").value;
+
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:8788/api/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok) {
+      VC.toast("Login successful");
+
+      localStorage.setItem(
+        "vc_user",
+        JSON.stringify(result.user)
+      );
+
+      setTimeout(() => {
+        location.href = "index.html";
+      }, 1200);
+
+    } else {
+      VC.toast(result.error || "Login failed");
+    }
+
+  } catch (error) {
+    console.error(error);
+    VC.toast("Backend connection failed");
+  }
+}
+
+async function doUp() {
+  const firstName = document.getElementById("su-first").value;
+  const lastName = document.getElementById("su-last").value;
+  const email = document.getElementById("su-email").value;
+  const password = document.getElementById("su-pass").value;
+
+  const fullName = `${firstName} ${lastName}`.trim();
+
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:8788/api/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email,
+          password
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok) {
+      VC.toast("Account created");
+
+      localStorage.setItem(
+        "vc_user",
+        JSON.stringify(result.user)
+      );
+
+      setTimeout(() => {
+        location.href = "index.html";
+      }, 1500);
+
+    } else {
+      VC.toast(result.error || "Register failed");
+    }
+
+  } catch (error) {
+    console.error(error);
+    VC.toast("Backend connection failed");
+  }
+}
+
+// Auto-greet on load
+setTimeout(()=>{
+  VC.loadLocales().then(()=>{
+    VC._applyLang();
+    setBubble(VC.t('auth.voicePrompt'));
+  });
+  if('speechSynthesis' in window){
+    const u=new SpeechSynthesisUtterance(VC.t('auth.welcomeSpeech'));
+    u.rate=0.95; speechSynthesis.speak(u);
+  }
+  initSR();
+  setTimeout(()=>{ if(sRecog)sRecog.start(); },1800);
+},500);
+</script>
+<script src="Lana.js?v=20260516-text1"></script>
+</body>
+</html>
